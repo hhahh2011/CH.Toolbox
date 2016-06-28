@@ -222,6 +222,10 @@ namespace CH.Toolbox
 
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
+            if (File.Exists(_lnkPath))
+            {
+                File.Delete(_lnkPath);
+            }
             var shell = new IWshRuntimeLibrary.WshShell();
             var shortCut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(_lnkPath);
             shortCut.TargetPath = Application.ExecutablePath;
