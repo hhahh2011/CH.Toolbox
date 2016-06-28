@@ -41,6 +41,8 @@
             this.myImageList = new System.Windows.Forms.ImageList(this.components);
             this.myRightContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnRestart = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenDir = new System.Windows.Forms.ToolStripMenuItem();
             this.myContextMenuStrip.SuspendLayout();
             this.myRightContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -50,11 +52,13 @@
             this.myContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShow,
             this.btnHide,
+            this.btnRestart,
+            this.btnOpenDir,
             this.btnAutoRun,
             this.btnUnAutoRun,
             this.btnExit});
             this.myContextMenuStrip.Name = "myContextMenuStrip";
-            this.myContextMenuStrip.Size = new System.Drawing.Size(153, 136);
+            this.myContextMenuStrip.Size = new System.Drawing.Size(153, 180);
             // 
             // btnShow
             // 
@@ -128,6 +132,20 @@
             this.btnRemove.Text = "删除";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // btnRestart
+            // 
+            this.btnRestart.Name = "btnRestart";
+            this.btnRestart.Size = new System.Drawing.Size(152, 22);
+            this.btnRestart.Text = "重启";
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
+            // btnOpenDir
+            // 
+            this.btnOpenDir.Name = "btnOpenDir";
+            this.btnOpenDir.Size = new System.Drawing.Size(152, 22);
+            this.btnOpenDir.Text = "打开目录";
+            this.btnOpenDir.Click += new System.EventHandler(this.btnOpenDir_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -162,6 +180,8 @@
         private System.Windows.Forms.ToolStripMenuItem btnRemove;
         private System.Windows.Forms.ToolStripMenuItem btnAutoRun;
         private System.Windows.Forms.ToolStripMenuItem btnUnAutoRun;
+        private System.Windows.Forms.ToolStripMenuItem btnRestart;
+        private System.Windows.Forms.ToolStripMenuItem btnOpenDir;
     }
 }
 

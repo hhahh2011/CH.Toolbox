@@ -18,6 +18,7 @@ namespace CH.Toolbox
     {
         #region 依赖
         private string _basePath = AppDomain.CurrentDomain.BaseDirectory;
+        private string _commandDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Commands");
         private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + Application.ProductName + ".lnk";
         public frmMain()
         {
@@ -101,7 +102,7 @@ namespace CH.Toolbox
 
         public void LoadData()
         {
-            var categorys = CommandHelper.GetAllCommands(_basePath);
+            var categorys = CommandHelper.GetAllCommands(_commandDir);
             foreach (var category in categorys)
             {
                 var tp = new TabPage
@@ -244,6 +245,17 @@ namespace CH.Toolbox
                 File.Delete(_lnkPath);
                 RefreshAutoRun();
             }
+        }
+
+        private void btnOpenDir_Click(object sender, EventArgs e)
+        {
+            Process.Start("Explorer.exe", _commandDir);
+            Hide();
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
     }
 }

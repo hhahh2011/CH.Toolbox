@@ -12,8 +12,12 @@ namespace CH.Toolbox
         public static List<CommandCategory> GetAllCommands(string basePath)
         {
             var list = new List<CommandCategory>();
-            var path = Path.Combine(basePath, @"Data\Commands");
-            var dirs = Directory.GetDirectories(path);
+            if (!Directory.Exists(basePath))
+            {
+                Directory.CreateDirectory(basePath);
+            }
+
+            var dirs = Directory.GetDirectories(basePath);
             foreach (var dir in dirs)
             {
                 var category = new CommandCategory
