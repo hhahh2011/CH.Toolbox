@@ -33,6 +33,8 @@
             this.myContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnShow = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHide = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAutoRun = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnUnAutoRun = new System.Windows.Forms.ToolStripMenuItem();
             this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.myNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.myTab = new System.Windows.Forms.TabControl();
@@ -48,28 +50,44 @@
             this.myContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShow,
             this.btnHide,
+            this.btnAutoRun,
+            this.btnUnAutoRun,
             this.btnExit});
             this.myContextMenuStrip.Name = "myContextMenuStrip";
-            this.myContextMenuStrip.Size = new System.Drawing.Size(101, 70);
+            this.myContextMenuStrip.Size = new System.Drawing.Size(153, 136);
             // 
             // btnShow
             // 
             this.btnShow.Name = "btnShow";
-            this.btnShow.Size = new System.Drawing.Size(100, 22);
+            this.btnShow.Size = new System.Drawing.Size(152, 22);
             this.btnShow.Text = "显示";
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
             // 
             // btnHide
             // 
             this.btnHide.Name = "btnHide";
-            this.btnHide.Size = new System.Drawing.Size(100, 22);
+            this.btnHide.Size = new System.Drawing.Size(152, 22);
             this.btnHide.Text = "隐藏";
             this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
+            // 
+            // btnAutoRun
+            // 
+            this.btnAutoRun.Name = "btnAutoRun";
+            this.btnAutoRun.Size = new System.Drawing.Size(152, 22);
+            this.btnAutoRun.Text = "开机启动";
+            this.btnAutoRun.Click += new System.EventHandler(this.btnAutoRun_Click);
+            // 
+            // btnUnAutoRun
+            // 
+            this.btnUnAutoRun.Name = "btnUnAutoRun";
+            this.btnUnAutoRun.Size = new System.Drawing.Size(152, 22);
+            this.btnUnAutoRun.Text = "关闭开机启动";
+            this.btnUnAutoRun.Click += new System.EventHandler(this.btnUnAutoRun_Click);
             // 
             // btnExit
             // 
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(100, 22);
+            this.btnExit.Size = new System.Drawing.Size(152, 22);
             this.btnExit.Text = "退出";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -101,12 +119,12 @@
             this.myRightContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnRemove});
             this.myRightContextMenuStrip.Name = "myRightContextMenuStrip";
-            this.myRightContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.myRightContextMenuStrip.Size = new System.Drawing.Size(101, 26);
             // 
             // btnRemove
             // 
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(152, 22);
+            this.btnRemove.Size = new System.Drawing.Size(100, 22);
             this.btnRemove.Text = "删除";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
@@ -142,6 +160,8 @@
         private System.Windows.Forms.ImageList myImageList;
         private System.Windows.Forms.ContextMenuStrip myRightContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem btnRemove;
+        private System.Windows.Forms.ToolStripMenuItem btnAutoRun;
+        private System.Windows.Forms.ToolStripMenuItem btnUnAutoRun;
     }
 }
 

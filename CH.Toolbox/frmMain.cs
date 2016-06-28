@@ -10,6 +10,7 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace CH.Toolbox
 {
@@ -17,10 +18,12 @@ namespace CH.Toolbox
     {
         #region 依赖
         private string _basePath = AppDomain.CurrentDomain.BaseDirectory;
+        private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + Application.ProductName + ".lnk";
         public frmMain()
         {
             InitializeComponent();
             LoadData();
+            RefreshAutoRun();
         }
         #endregion
 
@@ -98,7 +101,6 @@ namespace CH.Toolbox
 
         public void LoadData()
         {
-            
             var categorys = CommandHelper.GetAllCommands(_basePath);
             foreach (var category in categorys)
             {
@@ -129,7 +131,7 @@ namespace CH.Toolbox
                     var c = (sender as ListView)?.Tag as CommandCategory;
                     var file = (Array)e.Data.GetData(DataFormats.FileDrop);
                     var cmd = CommandHelper.CreateCommand(file.GetValue(0)?.ToString(), c);
-                    if (cmd!=null)
+                    if (cmd != null)
                     {
                         lv.Items.Add(CreateListViewItem(cmd));
                     }
@@ -137,14 +139,14 @@ namespace CH.Toolbox
 
 
 
-                lv.MouseClick += (sender,e) =>
+                lv.MouseClick += (sender, e) =>
                 {
                     if (e.Button != MouseButtons.Left)
                     {
                         return;
                     }
 
-                    var command = ((ListView) sender).SelectedItems[0].Tag as Command;
+                    var command = ((ListView)sender).SelectedItems[0].Tag as Command;
                     if (command != null)
                     {
                         try
@@ -167,6 +169,21 @@ namespace CH.Toolbox
                 myTab.TabPages.Add(tp);
             }
 
+        }
+
+        public void RefreshAutoRun()
+        {
+            myContextMenuStrip.Items["btnAutoRun"].Visible = false;
+            myContextMenuStrip.Items["btnUnAutoRun"].Visible = false;
+
+            if (!File.Exists(_lnkPath))
+            {
+                myContextMenuStrip.Items["btnAutoRun"].Visible = true;
+            }
+            else
+            {
+                myContextMenuStrip.Items["btnUnAutoRun"].Visible = true;
+            }
         }
 
         public ListViewItem CreateListViewItem(Command command)
@@ -200,6 +217,28 @@ namespace CH.Toolbox
                     File.Delete(command.FullName);
                     lv.Items.Remove(lvi);
                 }
+            }
+        }
+
+        private void btnAutoRun_Click(object sender, EventArgs e)
+        {
+            var shell = new IWshRuntimeLibrary.WshShell();
+            var shortCut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(_lnkPath);
+            shortCut.TargetPath = Application.ExecutablePath;
+            shortCut.WindowStyle = 1;
+            shortCut.Description = Application.ProductName + Application.ProductVersion;
+            shortCut.IconLocation = Application.ExecutablePath;
+            shortCut.WorkingDirectory = Application.StartupPath;
+            shortCut.Save();
+            RefreshAutoRun();
+        }
+
+        private void btnUnAutoRun_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(_lnkPath))
+            {
+                File.Delete(_lnkPath);
+                RefreshAutoRun();
             }
         }
     }
