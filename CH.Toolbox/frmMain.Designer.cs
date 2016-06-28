@@ -35,11 +35,12 @@
             this.btnHide = new System.Windows.Forms.ToolStripMenuItem();
             this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.myNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.myTabPage = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.myTab = new System.Windows.Forms.TabControl();
+            this.myImageList = new System.Windows.Forms.ImageList(this.components);
+            this.myRightContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.myContextMenuStrip.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.myRightContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // myContextMenuStrip
@@ -79,44 +80,42 @@
             this.myNotifyIcon.Text = "CH.Toolbox";
             this.myNotifyIcon.Visible = true;
             // 
-            // tabControl1
+            // myTab
             // 
-            this.tabControl1.Controls.Add(this.myTabPage);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.ItemSize = new System.Drawing.Size(60, 35);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(774, 355);
-            this.tabControl1.TabIndex = 1;
+            this.myTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.myTab.ItemSize = new System.Drawing.Size(60, 35);
+            this.myTab.Location = new System.Drawing.Point(0, 0);
+            this.myTab.Name = "myTab";
+            this.myTab.SelectedIndex = 0;
+            this.myTab.Size = new System.Drawing.Size(774, 355);
+            this.myTab.TabIndex = 1;
             // 
-            // myTabPage
+            // myImageList
             // 
-            this.myTabPage.Location = new System.Drawing.Point(4, 39);
-            this.myTabPage.Name = "myTabPage";
-            this.myTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.myTabPage.Size = new System.Drawing.Size(766, 312);
-            this.myTabPage.TabIndex = 0;
-            this.myTabPage.Text = "tabPage1";
-            this.myTabPage.UseVisualStyleBackColor = true;
+            this.myImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.myImageList.ImageSize = new System.Drawing.Size(32, 32);
+            this.myImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // tabPage2
+            // myRightContextMenuStrip
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 39);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(766, 312);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.myRightContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnRemove});
+            this.myRightContextMenuStrip.Name = "myRightContextMenuStrip";
+            this.myRightContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(152, 22);
+            this.btnRemove.Text = "删除";
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 355);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.myTab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -127,7 +126,7 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.myContextMenuStrip.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.myRightContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -139,9 +138,10 @@
         private System.Windows.Forms.ToolStripMenuItem btnShow;
         private System.Windows.Forms.ToolStripMenuItem btnHide;
         private System.Windows.Forms.ToolStripMenuItem btnExit;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage myTabPage;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl myTab;
+        private System.Windows.Forms.ImageList myImageList;
+        private System.Windows.Forms.ContextMenuStrip myRightContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem btnRemove;
     }
 }
 

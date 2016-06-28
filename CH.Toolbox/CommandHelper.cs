@@ -48,5 +48,32 @@ namespace CH.Toolbox
             }
             return list;
         }
+
+        public static Command CreateCommand(string fullName, CommandCategory category)
+        {
+            if (string.IsNullOrEmpty(fullName) || category == null)
+            {
+                return null;
+            }
+
+            var command = new Command
+            {
+                DisplayName = Path.GetFileNameWithoutExtension(fullName),
+                Cmd = fullName
+            };
+
+            var savePath = Path.Combine(category.FullName, command.DisplayName + ".json");
+            using (var fs = new FileStream(savePath, FileMode.Create, FileAccess.Write))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.Write(command.ToJsonString(indented:true,isIgnoreNull: true));
+                }
+            }
+            command.Name = Path.GetFileNameWithoutExtension(fullName);
+            command.FullName = savePath;
+            return command;
+        }
+
     }
 }

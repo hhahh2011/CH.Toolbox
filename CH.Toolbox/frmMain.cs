@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,7 +20,7 @@ namespace CH.Toolbox
         public frmMain()
         {
             InitializeComponent();
-            var test = CommandHelper.GetAllCommands(_basePath);
+            LoadData();
         }
         #endregion
 
@@ -88,7 +91,116 @@ namespace CH.Toolbox
             this.Close();
             this.Dispose();
             Application.Exit();
-        } 
+        }
         #endregion
+
+        #region 加载
+
+        public void LoadData()
+        {
+            
+            var categorys = CommandHelper.GetAllCommands(_basePath);
+            foreach (var category in categorys)
+            {
+                var tp = new TabPage
+                {
+                    Text = category.DisplayName,
+                    Dock = DockStyle.Fill,
+                    Name = "tab" + category.DisplayName.GetHashCode()
+                };
+
+                var lv = new ListView
+                {
+                    Dock = DockStyle.Fill,
+                    Name = tp.Name + "lv",
+                    LargeImageList = myImageList,
+                    Tag = category,
+                    AllowDrop = true,
+                    ContextMenuStrip = myRightContextMenuStrip
+                };
+
+                lv.DragEnter += (sender, e) =>
+                {
+                    e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
+                };
+
+                lv.DragDrop += (sender, e) =>
+                {
+                    var c = (sender as ListView)?.Tag as CommandCategory;
+                    var file = (Array)e.Data.GetData(DataFormats.FileDrop);
+                    var cmd = CommandHelper.CreateCommand(file.GetValue(0)?.ToString(), c);
+                    if (cmd!=null)
+                    {
+                        lv.Items.Add(CreateListViewItem(cmd));
+                    }
+                };
+
+
+
+                lv.MouseClick += (sender,e) =>
+                {
+                    if (e.Button != MouseButtons.Left)
+                    {
+                        return;
+                    }
+
+                    var command = ((ListView) sender).SelectedItems[0].Tag as Command;
+                    if (command != null)
+                    {
+                        try
+                        {
+                            Process.Start(command.Cmd);
+                            Hide();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                };
+
+                foreach (var command in category.Commands)
+                {
+                    lv.Items.Add(CreateListViewItem(command));
+                }
+                tp.Controls.Add(lv);
+                myTab.TabPages.Add(tp);
+            }
+
+        }
+
+        public ListViewItem CreateListViewItem(Command command)
+        {
+            if (!myImageList.Images.ContainsKey(command.Cmd))
+            {
+                var icon = IconHelper.GetFileIcon(command.Cmd);
+                myImageList.Images.Add(command.Cmd, icon);
+            }
+
+            return new ListViewItem
+            {
+                ImageKey = command.Cmd,
+                Text = command.Name,
+                Tag = command,
+            };
+        }
+
+        #endregion
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            var stab = myTab.SelectedTab;
+            var lv = stab.Controls.Find(stab.Name + "lv", false).FirstOrDefault() as ListView;
+            if (lv?.SelectedItems.Count > 0)
+            {
+                var lvi = lv.SelectedItems[0];
+                var command = lvi.Tag as Command;
+                if (command != null)
+                {
+                    File.Delete(command.FullName);
+                    lv.Items.Remove(lvi);
+                }
+            }
+        }
     }
 }
