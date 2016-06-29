@@ -186,6 +186,7 @@ namespace CH.Toolbox
                 myContextMenuStrip.Items["btnUnAutoRun"].Visible = true;
             }
         }
+       
 
         public ListViewItem CreateListViewItem(Command command)
         {
@@ -220,6 +221,10 @@ namespace CH.Toolbox
                 }
             }
         }
+
+
+
+
 
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
@@ -256,6 +261,22 @@ namespace CH.Toolbox
         private void btnRestart_Click(object sender, EventArgs e)
         {
             Application.Restart();
+        }
+
+        private void btnOpenInExplorer_Click(object sender, EventArgs e)
+        {
+            var stab = myTab.SelectedTab;
+            var lv = stab.Controls.Find(stab.Name + "lv", false).FirstOrDefault() as ListView;
+            if (lv?.SelectedItems.Count > 0)
+            {
+                var lvi = lv.SelectedItems[0];
+                var command = lvi.Tag as Command;
+                if (command != null)
+                {
+                    Process.Start("Explorer.exe", Path.GetDirectoryName(command.Cmd));
+                    Hide();
+                }
+            }
         }
     }
 }
