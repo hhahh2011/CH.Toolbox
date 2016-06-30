@@ -65,10 +65,14 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="IconHelper.cs" />
     <Compile Include="JsonExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Translations\Basic.cs" />
+    <Compile Include="Translations\TranslationResult.cs" />
+    <Compile Include="Translations\Web.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

@@ -40,11 +40,17 @@
             this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.myNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.myTab = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lbSuggestions = new System.Windows.Forms.ListBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.txtKeyword = new System.Windows.Forms.TextBox();
             this.myImageList = new System.Windows.Forms.ImageList(this.components);
             this.myRightContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.myContextMenuStrip.SuspendLayout();
+            this.myTab.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.myRightContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,6 +125,7 @@
             // 
             // myTab
             // 
+            this.myTab.Controls.Add(this.tabPage1);
             this.myTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.myTab.ItemSize = new System.Drawing.Size(60, 35);
             this.myTab.Location = new System.Drawing.Point(0, 0);
@@ -126,6 +133,47 @@
             this.myTab.SelectedIndex = 0;
             this.myTab.Size = new System.Drawing.Size(774, 355);
             this.myTab.TabIndex = 1;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.lbSuggestions);
+            this.tabPage1.Controls.Add(this.btnSearch);
+            this.tabPage1.Controls.Add(this.txtKeyword);
+            this.tabPage1.Location = new System.Drawing.Point(4, 39);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(766, 312);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "变量";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lbSuggestions
+            // 
+            this.lbSuggestions.FormattingEnabled = true;
+            this.lbSuggestions.ItemHeight = 12;
+            this.lbSuggestions.Location = new System.Drawing.Point(4, 31);
+            this.lbSuggestions.Name = "lbSuggestions";
+            this.lbSuggestions.Size = new System.Drawing.Size(322, 268);
+            this.lbSuggestions.TabIndex = 3;
+            this.lbSuggestions.Click += new System.EventHandler(this.lbSuggestions_Click);
+            this.lbSuggestions.DoubleClick += new System.EventHandler(this.lbSuggestions_DoubleClick);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(251, 5);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 2;
+            this.btnSearch.Text = "查询";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtKeyword
+            // 
+            this.txtKeyword.Location = new System.Drawing.Point(4, 6);
+            this.txtKeyword.Name = "txtKeyword";
+            this.txtKeyword.Size = new System.Drawing.Size(241, 21);
+            this.txtKeyword.TabIndex = 1;
             // 
             // myImageList
             // 
@@ -139,24 +187,25 @@
             this.btnRemove,
             this.btnOpenInExplorer});
             this.myRightContextMenuStrip.Name = "myRightContextMenuStrip";
-            this.myRightContextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.myRightContextMenuStrip.Size = new System.Drawing.Size(149, 48);
             // 
             // btnRemove
             // 
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(152, 22);
+            this.btnRemove.Size = new System.Drawing.Size(148, 22);
             this.btnRemove.Text = "删除";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnOpenInExplorer
             // 
             this.btnOpenInExplorer.Name = "btnOpenInExplorer";
-            this.btnOpenInExplorer.Size = new System.Drawing.Size(152, 22);
+            this.btnOpenInExplorer.Size = new System.Drawing.Size(148, 22);
             this.btnOpenInExplorer.Text = "打开文件目录";
             this.btnOpenInExplorer.Click += new System.EventHandler(this.btnOpenInExplorer_Click);
             // 
             // frmMain
             // 
+            this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 355);
@@ -171,6 +220,9 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.myContextMenuStrip.ResumeLayout(false);
+            this.myTab.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.myRightContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -192,6 +244,10 @@
         private System.Windows.Forms.ToolStripMenuItem btnRestart;
         private System.Windows.Forms.ToolStripMenuItem btnOpenDir;
         private System.Windows.Forms.ToolStripMenuItem btnOpenInExplorer;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.TextBox txtKeyword;
+        private System.Windows.Forms.ListBox lbSuggestions;
     }
 }
 

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -17,7 +18,6 @@ namespace CH.Toolbox
     public partial class frmMain : Form
     {
         #region 依赖
-        private string _basePath = AppDomain.CurrentDomain.BaseDirectory;
         private string _commandDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Commands");
         private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + Application.ProductName + ".lnk";
         public frmMain()
@@ -169,6 +169,10 @@ namespace CH.Toolbox
                 tp.Controls.Add(lv);
                 myTab.TabPages.Add(tp);
             }
+            if (myTab.TabPages.Count > 1)
+            {
+                myTab.SelectedIndex = 1;
+            }
 
         }
 
@@ -186,7 +190,7 @@ namespace CH.Toolbox
                 myContextMenuStrip.Items["btnUnAutoRun"].Visible = true;
             }
         }
-       
+
 
         public ListViewItem CreateListViewItem(Command command)
         {
@@ -278,5 +282,85 @@ namespace CH.Toolbox
                 }
             }
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtKeyword.Text))
+            {
+                MessageBox.Show("请输入关键字!");
+                return;
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                var html = HttpLibSyncRequest.Get(
+                    $"http://fanyi.youdao.com/openapi.do?keyfrom=Codelf&key=2023743559&type=data&doctype=json&version=1.1&q={txtKeyword.Text}");
+
+                if (!string.IsNullOrEmpty(html))
+                {
+                    var tr = html.ToObject<TranslationResult>();
+                    BeginInvoke(new MethodInvoker(() =>
+                    {
+
+                        lbSuggestions.Items.Clear();
+
+                    }));
+
+                    if (tr.Web == null)
+                    {
+                        BeginInvoke(new MethodInvoker(() =>
+                        {
+                            lbSuggestions.Items.Insert(0, "无结果");
+                        }));
+                        return;
+                    }
+
+
+                    foreach (var t in tr.Web)
+                    {
+                        BeginInvoke(new MethodInvoker(() =>
+                        {
+                            foreach (var v in t.Value)
+                            {
+                                lbSuggestions.Items.Insert(0, v);
+                            }
+                        }));
+                    }
+                    var result = tr.Web.FirstOrDefault()?.Value?.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        BeginInvoke(new MethodInvoker(() =>
+                        {
+                            Clipboard.SetData(DataFormats.Text, result);
+                        }));
+                    }
+                }
+            });
+
+        }
+
+        private void lbSuggestions_DoubleClick(object sender, EventArgs e)
+        {
+            var sel = lbSuggestions.SelectedItem;
+            Clipboard.SetData(DataFormats.Text, sel);
+            Hide();
+        }
+
+        private void lbSuggestions_Click(object sender, EventArgs e)
+        {
+            var sel = lbSuggestions.SelectedItem;
+            Clipboard.SetData(DataFormats.Text, sel);
+        }
+
+        private void myWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+           
+        }
+
+        private void myWebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        {
+           
+        }
     }
 }
+
