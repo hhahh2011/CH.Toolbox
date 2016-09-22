@@ -20,6 +20,8 @@ namespace CH.Toolbox
         #region 依赖
         private string _commandDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Commands");
         private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + Application.ProductName + ".lnk";
+        private int _countMin = 25;
+        private int _countDown;
         public frmMain()
         {
             InitializeComponent();
@@ -226,10 +228,6 @@ namespace CH.Toolbox
             }
         }
 
-
-
-
-
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
             if (File.Exists(_lnkPath))
@@ -352,14 +350,44 @@ namespace CH.Toolbox
             Clipboard.SetData(DataFormats.Text, sel);
         }
 
-        private void myWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void btnCountDownStart_Click(object sender, EventArgs e)
         {
-           
+            _countDown = _countMin*60;
+            btnCountDownStart.Enabled = false;
+            tCountDown.Start();
         }
 
-        private void myWebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        private void tCountDown_Tick(object sender, EventArgs e)
         {
-           
+            _countDown--;
+            BeginInvoke(new MethodInvoker(delegate
+            {
+                var m = _countDown/60;
+                var s = _countDown%60;
+                lbCountDown.Text = (m < 10 ? "0" + m : m.ToString()) + @":" + (s < 10 ? "0" + s : s.ToString());
+            }));
+
+            if (_countDown == 0)
+            {
+                btnCountDownStart.Enabled = true;
+                tCountDown.Stop();
+                BeginInvoke(new MethodInvoker(delegate
+                {
+                    lsTimes.Items.Insert(0,
+                        DateTime.Now.AddMinutes(-_countMin).ToString("mm:ss") + "-" + DateTime.Now.ToString("mm:ss"));
+                }));
+                MessageBox.Show(@"完成一个番茄时间");
+            }
+        }
+
+        private void btnCountDownClear_Click(object sender, EventArgs e)
+        {
+            lsTimes.Items.Clear();
+        }
+
+        private void myNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
         }
     }
 }

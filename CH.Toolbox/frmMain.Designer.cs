@@ -41,6 +41,10 @@
             this.myNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.myTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lbCountDown = new System.Windows.Forms.Label();
+            this.lsTimes = new System.Windows.Forms.ListBox();
+            this.btnCountDownClear = new System.Windows.Forms.Button();
+            this.btnCountDownStart = new System.Windows.Forms.Button();
             this.lbSuggestions = new System.Windows.Forms.ListBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtKeyword = new System.Windows.Forms.TextBox();
@@ -48,6 +52,7 @@
             this.myRightContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.tCountDown = new System.Windows.Forms.Timer(this.components);
             this.myContextMenuStrip.SuspendLayout();
             this.myTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -122,6 +127,7 @@
             this.myNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("myNotifyIcon.Icon")));
             this.myNotifyIcon.Text = "CH.Toolbox";
             this.myNotifyIcon.Visible = true;
+            this.myNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.myNotifyIcon_MouseDoubleClick);
             // 
             // myTab
             // 
@@ -136,6 +142,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.lbCountDown);
+            this.tabPage1.Controls.Add(this.lsTimes);
+            this.tabPage1.Controls.Add(this.btnCountDownClear);
+            this.tabPage1.Controls.Add(this.btnCountDownStart);
             this.tabPage1.Controls.Add(this.lbSuggestions);
             this.tabPage1.Controls.Add(this.btnSearch);
             this.tabPage1.Controls.Add(this.txtKeyword);
@@ -144,8 +154,47 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(766, 312);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "变量";
+            this.tabPage1.Text = "首页";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lbCountDown
+            // 
+            this.lbCountDown.AutoSize = true;
+            this.lbCountDown.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbCountDown.Location = new System.Drawing.Point(384, 33);
+            this.lbCountDown.Name = "lbCountDown";
+            this.lbCountDown.Size = new System.Drawing.Size(53, 16);
+            this.lbCountDown.TabIndex = 6;
+            this.lbCountDown.Text = "00:00";
+            // 
+            // lsTimes
+            // 
+            this.lsTimes.FormattingEnabled = true;
+            this.lsTimes.ItemHeight = 12;
+            this.lsTimes.Location = new System.Drawing.Point(332, 55);
+            this.lsTimes.Name = "lsTimes";
+            this.lsTimes.Size = new System.Drawing.Size(156, 244);
+            this.lsTimes.TabIndex = 5;
+            // 
+            // btnCountDownClear
+            // 
+            this.btnCountDownClear.Location = new System.Drawing.Point(413, 5);
+            this.btnCountDownClear.Name = "btnCountDownClear";
+            this.btnCountDownClear.Size = new System.Drawing.Size(75, 23);
+            this.btnCountDownClear.TabIndex = 4;
+            this.btnCountDownClear.Text = "清空";
+            this.btnCountDownClear.UseVisualStyleBackColor = true;
+            this.btnCountDownClear.Click += new System.EventHandler(this.btnCountDownClear_Click);
+            // 
+            // btnCountDownStart
+            // 
+            this.btnCountDownStart.Location = new System.Drawing.Point(332, 5);
+            this.btnCountDownStart.Name = "btnCountDownStart";
+            this.btnCountDownStart.Size = new System.Drawing.Size(75, 23);
+            this.btnCountDownStart.TabIndex = 4;
+            this.btnCountDownStart.Text = "开始";
+            this.btnCountDownStart.UseVisualStyleBackColor = true;
+            this.btnCountDownStart.Click += new System.EventHandler(this.btnCountDownStart_Click);
             // 
             // lbSuggestions
             // 
@@ -203,6 +252,11 @@
             this.btnOpenInExplorer.Text = "打开文件目录";
             this.btnOpenInExplorer.Click += new System.EventHandler(this.btnOpenInExplorer_Click);
             // 
+            // tCountDown
+            // 
+            this.tCountDown.Interval = 1000;
+            this.tCountDown.Tick += new System.EventHandler(this.tCountDown_Tick);
+            // 
             // frmMain
             // 
             this.AcceptButton = this.btnSearch;
@@ -248,6 +302,11 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtKeyword;
         private System.Windows.Forms.ListBox lbSuggestions;
+        private System.Windows.Forms.Button btnCountDownStart;
+        private System.Windows.Forms.Button btnCountDownClear;
+        private System.Windows.Forms.ListBox lsTimes;
+        private System.Windows.Forms.Label lbCountDown;
+        private System.Windows.Forms.Timer tCountDown;
     }
 }
 
