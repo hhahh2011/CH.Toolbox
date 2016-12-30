@@ -41,6 +41,7 @@
             this.myNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.myTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lbClipboards = new System.Windows.Forms.ListBox();
             this.lbCountDown = new System.Windows.Forms.Label();
             this.lsTimes = new System.Windows.Forms.ListBox();
             this.btnCountDownClear = new System.Windows.Forms.Button();
@@ -53,6 +54,8 @@
             this.btnRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.tCountDown = new System.Windows.Forms.Timer(this.components);
+            this.btnClearClipboard = new System.Windows.Forms.Button();
+            this.btnCopyClipboard = new System.Windows.Forms.Button();
             this.myContextMenuStrip.SuspendLayout();
             this.myTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -137,11 +140,14 @@
             this.myTab.Location = new System.Drawing.Point(0, 0);
             this.myTab.Name = "myTab";
             this.myTab.SelectedIndex = 0;
-            this.myTab.Size = new System.Drawing.Size(774, 355);
+            this.myTab.Size = new System.Drawing.Size(774, 345);
             this.myTab.TabIndex = 1;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnCopyClipboard);
+            this.tabPage1.Controls.Add(this.btnClearClipboard);
+            this.tabPage1.Controls.Add(this.lbClipboards);
             this.tabPage1.Controls.Add(this.lbCountDown);
             this.tabPage1.Controls.Add(this.lsTimes);
             this.tabPage1.Controls.Add(this.btnCountDownClear);
@@ -152,10 +158,22 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(766, 312);
+            this.tabPage1.Size = new System.Drawing.Size(766, 302);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "首页";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lbClipboards
+            // 
+            this.lbClipboards.FormattingEnabled = true;
+            this.lbClipboards.ItemHeight = 12;
+            this.lbClipboards.Location = new System.Drawing.Point(494, 31);
+            this.lbClipboards.Name = "lbClipboards";
+            this.lbClipboards.Size = new System.Drawing.Size(264, 268);
+            this.lbClipboards.TabIndex = 7;
+            this.lbClipboards.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbClipboards_MouseClick);
+            this.lbClipboards.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lbClipboards_KeyUp);
+            this.lbClipboards.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbClipboards_MouseDoubleClick);
             // 
             // lbCountDown
             // 
@@ -178,7 +196,7 @@
             // 
             // btnCountDownClear
             // 
-            this.btnCountDownClear.Location = new System.Drawing.Point(413, 5);
+            this.btnCountDownClear.Location = new System.Drawing.Point(413, 6);
             this.btnCountDownClear.Name = "btnCountDownClear";
             this.btnCountDownClear.Size = new System.Drawing.Size(75, 23);
             this.btnCountDownClear.TabIndex = 4;
@@ -188,7 +206,7 @@
             // 
             // btnCountDownStart
             // 
-            this.btnCountDownStart.Location = new System.Drawing.Point(332, 5);
+            this.btnCountDownStart.Location = new System.Drawing.Point(332, 6);
             this.btnCountDownStart.Name = "btnCountDownStart";
             this.btnCountDownStart.Size = new System.Drawing.Size(75, 23);
             this.btnCountDownStart.TabIndex = 4;
@@ -209,7 +227,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(251, 5);
+            this.btnSearch.Location = new System.Drawing.Point(251, 6);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 2;
@@ -257,12 +275,32 @@
             this.tCountDown.Interval = 1000;
             this.tCountDown.Tick += new System.EventHandler(this.tCountDown_Tick);
             // 
+            // btnClearClipboard
+            // 
+            this.btnClearClipboard.Location = new System.Drawing.Point(683, 6);
+            this.btnClearClipboard.Name = "btnClearClipboard";
+            this.btnClearClipboard.Size = new System.Drawing.Size(75, 23);
+            this.btnClearClipboard.TabIndex = 9;
+            this.btnClearClipboard.Text = "清空";
+            this.btnClearClipboard.UseVisualStyleBackColor = true;
+            this.btnClearClipboard.Click += new System.EventHandler(this.btnClearClipboard_Click);
+            // 
+            // btnCopyClipboard
+            // 
+            this.btnCopyClipboard.Location = new System.Drawing.Point(602, 6);
+            this.btnCopyClipboard.Name = "btnCopyClipboard";
+            this.btnCopyClipboard.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyClipboard.TabIndex = 10;
+            this.btnCopyClipboard.Text = "复制剪贴板";
+            this.btnCopyClipboard.UseVisualStyleBackColor = true;
+            this.btnCopyClipboard.Click += new System.EventHandler(this.btnCopyClipboard_Click);
+            // 
             // frmMain
             // 
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 355);
+            this.ClientSize = new System.Drawing.Size(774, 345);
             this.Controls.Add(this.myTab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -307,6 +345,9 @@
         private System.Windows.Forms.ListBox lsTimes;
         private System.Windows.Forms.Label lbCountDown;
         private System.Windows.Forms.Timer tCountDown;
+        private System.Windows.Forms.ListBox lbClipboards;
+        private System.Windows.Forms.Button btnClearClipboard;
+        private System.Windows.Forms.Button btnCopyClipboard;
     }
 }
 

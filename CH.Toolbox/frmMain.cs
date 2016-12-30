@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,23 +19,35 @@ namespace CH.Toolbox
     public partial class frmMain : Form
     {
         #region 依赖
+
         private string _commandDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Commands");
-        private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + Application.ProductName + ".lnk";
+
+        private string _lnkPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" +
+                                  Application.ProductName + ".lnk";
+
         private int _countMin = 25;
         private int _countDown;
+
         public frmMain()
         {
             InitializeComponent();
             LoadData();
             RefreshAutoRun();
         }
+
         #endregion
 
         #region 热键
+
         private const int WM_HOTKEY = 0x312; //窗口消息-热键
         private const int WM_CREATE = 0x1; //窗口消息-创建
         private const int WM_DESTROY = 0x2; //窗口消息-销毁
         private const int HOTKEY_ID = 0x9527; //热键ID
+
+        #endregion
+
+        #region 消息
+
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -67,9 +80,11 @@ namespace CH.Toolbox
                     break;
             }
         }
+
         #endregion
 
         #region 窗口
+
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -98,6 +113,7 @@ namespace CH.Toolbox
             this.Dispose();
             Application.Exit();
         }
+
         #endregion
 
         #region 加载
@@ -132,7 +148,7 @@ namespace CH.Toolbox
                 lv.DragDrop += (sender, e) =>
                 {
                     var c = (sender as ListView)?.Tag as CommandCategory;
-                    var file = (Array)e.Data.GetData(DataFormats.FileDrop);
+                    var file = (Array) e.Data.GetData(DataFormats.FileDrop);
                     var cmd = CommandHelper.CreateCommand(file.GetValue(0)?.ToString(), c);
                     if (cmd != null)
                     {
@@ -149,7 +165,7 @@ namespace CH.Toolbox
                         return;
                     }
 
-                    var command = ((ListView)sender).SelectedItems[0].Tag as Command;
+                    var command = ((ListView) sender).SelectedItems[0].Tag as Command;
                     if (command != null)
                     {
                         try
@@ -212,6 +228,8 @@ namespace CH.Toolbox
 
         #endregion
 
+        #region 其它
+
         private void btnRemove_Click(object sender, EventArgs e)
         {
             var stab = myTab.SelectedTab;
@@ -235,7 +253,7 @@ namespace CH.Toolbox
                 File.Delete(_lnkPath);
             }
             var shell = new IWshRuntimeLibrary.WshShell();
-            var shortCut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(_lnkPath);
+            var shortCut = (IWshRuntimeLibrary.IWshShortcut) shell.CreateShortcut(_lnkPath);
             shortCut.TargetPath = Application.ExecutablePath;
             shortCut.WindowStyle = 1;
             shortCut.Description = Application.ProductName + Application.ProductVersion;
@@ -329,7 +347,7 @@ namespace CH.Toolbox
                     {
                         BeginInvoke(new MethodInvoker(() =>
                         {
-                            Clipboard.SetData(DataFormats.Text, result);
+                            SetClipboardTextData(result);
                         }));
                     }
                 }
@@ -340,14 +358,40 @@ namespace CH.Toolbox
         private void lbSuggestions_DoubleClick(object sender, EventArgs e)
         {
             var sel = lbSuggestions.SelectedItem;
-            Clipboard.SetData(DataFormats.Text, sel);
+            SetClipboardTextData(sel.ToString());
             Hide();
         }
 
         private void lbSuggestions_Click(object sender, EventArgs e)
         {
             var sel = lbSuggestions.SelectedItem;
-            Clipboard.SetData(DataFormats.Text, sel);
+            SetClipboardTextData(sel.ToString());
+        }
+
+        private void SetClipboardTextData(string text)
+        {
+            try
+            {
+                Clipboard.SetData(DataFormats.Text, text);
+            }
+            catch
+            {
+            }
+        }
+
+        private string GetClipboardTextData()
+        {
+            try
+            {
+                if (Clipboard.ContainsText())
+                {
+                    return Clipboard.GetData(DataFormats.Text).ToString();
+                }
+            }
+            catch
+            {
+            }
+            return string.Empty;
         }
 
         private void btnCountDownStart_Click(object sender, EventArgs e)
@@ -388,6 +432,47 @@ namespace CH.Toolbox
         private void myNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
+        }
+
+        #endregion
+
+        private void btnClearClipboard_Click(object sender, EventArgs e)
+        {
+            lbClipboards.Items.Clear();
+        }
+
+        private void lbClipboards_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var sel = lbClipboards.SelectedItem;
+            SetClipboardTextData(sel.ToString());
+            Hide();
+        }
+
+        private void lbClipboards_MouseClick(object sender, MouseEventArgs e)
+        {
+            var sel = lbClipboards.SelectedItem;
+            SetClipboardTextData(sel.ToString());
+        }
+
+        private void btnCopyClipboard_Click(object sender, EventArgs e)
+        {
+            var text = GetClipboardTextData()?.Trim();
+            if (!string.IsNullOrEmpty(text))
+            {
+                lbClipboards.Items.Insert(0, text);
+            }
+        }
+
+        private void lbClipboards_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                var sel = lbClipboards.SelectedItem;
+                if (sel != null)
+                {
+                    lbClipboards.Items.Remove(sel);
+                }
+            }
         }
     }
 }
