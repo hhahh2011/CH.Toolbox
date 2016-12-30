@@ -358,21 +358,24 @@ namespace CH.Toolbox
         private void lbSuggestions_DoubleClick(object sender, EventArgs e)
         {
             var sel = lbSuggestions.SelectedItem;
-            SetClipboardTextData(sel.ToString());
+            SetClipboardTextData(sel?.ToString());
             Hide();
         }
 
         private void lbSuggestions_Click(object sender, EventArgs e)
         {
             var sel = lbSuggestions.SelectedItem;
-            SetClipboardTextData(sel.ToString());
+            SetClipboardTextData(sel?.ToString());
         }
 
         private void SetClipboardTextData(string text)
         {
             try
             {
-                Clipboard.SetData(DataFormats.Text, text);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    Clipboard.SetData(DataFormats.Text, text);
+                }
             }
             catch
             {
@@ -444,14 +447,14 @@ namespace CH.Toolbox
         private void lbClipboards_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var sel = lbClipboards.SelectedItem;
-            SetClipboardTextData(sel.ToString());
+            SetClipboardTextData(sel?.ToString());
             Hide();
         }
 
         private void lbClipboards_MouseClick(object sender, MouseEventArgs e)
         {
             var sel = lbClipboards.SelectedItem;
-            SetClipboardTextData(sel.ToString());
+            SetClipboardTextData(sel?.ToString());
         }
 
         private void btnCopyClipboard_Click(object sender, EventArgs e)
